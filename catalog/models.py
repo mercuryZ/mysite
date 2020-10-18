@@ -20,6 +20,11 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('book-detail', args = [str(self.id)])
 
+    def display_genre(self):
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+    
+    display_genre.short_description = 'Genre'
+
 
 class Genre(models.Model):
     name = models.CharField(max_length = 200, help_text = "Enter a book genre.")
@@ -60,4 +65,4 @@ class Author(models.Model):
         return reverse('author-detail', args = [str(self.id)])
     
     def __str__(self):
-        return '({0}, {1})'.format(self.last_name, self.first_name)
+        return '{0}, {1}'.format(self.last_name, self.first_name)
