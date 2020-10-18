@@ -19,4 +19,5 @@ admin.site.register(Genre)
 
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('book', 'imprint', 'due_back', 'id')
+    list_filter = ('status', 'due_back')
