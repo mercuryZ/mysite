@@ -24,9 +24,8 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    # TODO
-    context_object_name = 'my_book_list'
-    queryset = Book.objects.filter(title__icontains = 'Harry')[0]
+    # context_object_name = 'my_book_list'
+    # queryset = Book.objects.filter(title__icontains = 'Harry')[0]
     template_name = 'books/my_arbitrary_template_name_list.html'
 
 
