@@ -40,3 +40,20 @@ class BookDetailView(generic.DetailView):
         
         return render(request, 'catalog/book_detail.html', context = {'book': book})
     
+
+class AuthorListView(generic.ListView):
+    model = Author
+    # context_object_name = 'my_book_list'
+    # template_name = 'authors/my_arbitrary_template_name_list.html'
+
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+
+    def book_detail_view(request, primary_key):
+        try:
+            book = Book.objects.get(pk = primary_key)
+        except Book.DoesNotExist:
+            raise Http404('Book does not exist')
+        
+        return render(request, 'catalog/book_detail.html', context = {'book': book})
