@@ -12,11 +12,15 @@ def index(request):
 
     num_authors = Author.objects.count()
 
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
     context = {
         'num_books': num_books,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
         'num_authors': num_authors,
+        'num_visits': num_visits,
     }
 
     return render(request, 'index.html', context = context)
@@ -24,9 +28,8 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    # TODO
-    context_object_name = 'my_book_list'
-    queryset = Book.objects.filter(title__icontains = 'Harry')[0]
+    # context_object_name = 'my_book_list'
+    # queryset = Book.objects.filter(title__icontains = 'Harry')[0]
     template_name = 'books/my_arbitrary_template_name_list.html'
 
 
@@ -41,3 +44,20 @@ class BookDetailView(generic.DetailView):
         
         return render(request, 'catalog/book_detail.html', context = {'book': book})
     
+
+class AuthorListView(generic.ListView):
+    model = Author
+    # context_object_name = 'my_book_list'
+    # template_name = 'authors/my_arbitrary_template_name_list.html'
+
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+
+    def book_detail_view(request, primary_key):
+        try:
+            book = Book.objects.get(pk = primary_key)
+        except Book.DoesNotExist:
+            raise Http404('Book does not exist')
+        
+        return render(request, 'catalog/book_detail.html', context = {'book': book})
